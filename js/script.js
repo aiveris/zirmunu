@@ -2,8 +2,6 @@
 const addTodoA1 = document.querySelector(".add-todo-a1");
 const addTodoFormA1 = document.querySelector(".add-todo-a1 .form");
 const tableTodosA1 = document.querySelector(".table-a1");
-const editModal = document.querySelector(".edit-modal");
-const editModalForm = document.querySelector(".edit-modal .form");
 const btnAdd = document.querySelector(".btn-add");
 const plansA1 = document.querySelector(".buttonA1");
 let id;
@@ -15,19 +13,13 @@ const renderTodoA1 = (doc) => {
     <tr data-id='${doc.id}'>
       <td>${doc.data().todo}</td>
       <th>
-      <button class="btn btn-edit">Edit</button>
-      <button class="btn btn-delete">Del</button>
+      <button class="btn btn-delete">✘</button>
       </th>
     </tr>
   `;
+
   tableTodosA1.insertAdjacentHTML("beforeend", tr);
-  // Click edit to-do
-  const btnEdit = document.querySelector(`[data-id='${doc.id}'] .btn-edit`);
-  btnEdit.addEventListener("click", () => {
-    editModal.classList.add("modal-show");
-    id = doc.id;
-    editModalForm.todo.value = doc.data().todo;
-  });
+
   // Click delete to-do
   const btnDelete = document.querySelector(`[data-id='${doc.id}'] .btn-delete`);
   btnDelete.addEventListener("click", () => {
@@ -52,12 +44,6 @@ db.collection("a1").onSnapshot((snapshot) => {
       countA1--;
       document.getElementById("countA1").innerHTML = countA1;
     }
-    if (change.type === "modified") {
-      let tr = document.querySelector(`[data-id='${change.doc.id}']`);
-      let tbody = tr.parentElement;
-      tableTodosA1.removeChild(tbody);
-      renderTodoA1(change.doc);
-    }
   });
 });
 addTodoFormA1.addEventListener("submit", (e) => {
@@ -67,31 +53,144 @@ addTodoFormA1.addEventListener("submit", (e) => {
   });
   addTodoFormA1.todo.value = "";
 });
-// Click submit in edit to-do
-editModalForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  db.collection("a1").doc(id).update({
-    todo: editModalForm.todo.value,
-  });
-  editModal.classList.remove("modal-show");
-});
 
-window.addEventListener("click", (e) => {
-  if (e.target === addTodoA1) {
-    addModal.classList.remove("modal-show");
-  }
-  if (e.target === editModal) {
-    editModal.classList.remove("modal-show");
-  }
-});
-document.addEventListener("keydown", (event) => {
-  if (event.code === "Escape" || event.code === 27) {
-    editModal.classList.remove("modal-show");
-  }
-});
-function close_modal() {
-  editModal.classList.remove("modal-show");
+function add_player_0() {
+  db.collection("a1").add({
+    todo: "Deivydas Juškevičius",
+  });
 }
-function drop_table() {
-  db.collection("a1").doc(`${doc.id}`).delete();
+function add_player_2() {
+  db.collection("a1").add({
+    todo: "Domas Vilkelis",
+  });
+}
+function add_player_3() {
+  db.collection("a1").add({
+    todo: "Hubertas Degėsis",
+  });
+}
+function add_player_4() {
+  db.collection("a1").add({
+    todo: "Jokūbas Ramanauskas",
+  });
+}
+function add_player_5() {
+  db.collection("a1").add({
+    todo: "Martynas Urbšas",
+  });
+}
+function add_player_7() {
+  db.collection("a1").add({
+    todo: "Mindaugas Beleka",
+  });
+}
+function add_player_8() {
+  db.collection("a1").add({
+    todo: "Maksim Karas",
+  });
+}
+function add_player_9() {
+  db.collection("a1").add({
+    todo: "Pijus Petrošius",
+  });
+}
+function add_player_10() {
+  db.collection("a1").add({
+    todo: "Tomas Ališauskas",
+  });
+}
+function add_player_11() {
+  db.collection("a1").add({
+    todo: "Vytenis Stankevičius",
+  });
+}
+function add_player_12() {
+  db.collection("a1").add({
+    todo: "Karolis Juchevičius",
+  });
+}
+function add_player_13() {
+  db.collection("a1").add({
+    todo: "Pavel ",
+  });
+}
+function add_player_14() {
+  db.collection("a1").add({
+    todo: "Augustinas Stoškus 14",
+  });
+}
+function add_player_15() {
+  db.collection("a1").add({
+    todo: "Artūras Simonaitis 15",
+  });
+}
+function add_player_19() {
+  db.collection("a1").add({
+    todo: "Vakaris Stoškus 19",
+  });
+}
+function add_player_23() {
+  db.collection("a1").add({
+    todo: "Justas Sobolevskis 23",
+  });
+}
+function add_player_24() {
+  db.collection("a1").add({
+    todo: "Artūras Šliažas 24",
+  });
+}
+function add_player_27() {
+  db.collection("a1").add({
+    todo: "Mantas Kadzevičius 27",
+  });
+}
+function add_player_30() {
+  db.collection("a1").add({
+    todo: "Mindaugas Beleka 30",
+  });
+}
+function add_player_33() {
+  db.collection("a1").add({
+    todo: "Rimantas Sagatas 33",
+  });
+}
+function add_player_42() {
+  db.collection("a1").add({
+    todo: "Donatas Bilius 42",
+  });
+}
+function add_player_55() {
+  db.collection("a1").add({
+    todo: "Donatas Bilius 55",
+  });
+}
+function add_player_69() {
+  db.collection("a1").add({
+    todo: "Raimondas Maslauskas 69",
+  });
+}
+function add_player_77() {
+  db.collection("a1").add({
+    todo: "Donatas Bilius 77",
+  });
+}
+function add_player_82() {
+  db.collection("a1").add({
+    todo: "Dainius Stoškus 82",
+  });
+}
+function add_player_91() {
+  db.collection("a1").add({
+    todo: "Jonas Savickas 91",
+  });
+}
+function add_player_92() {
+  db.collection("a1").add({
+    todo: "Augustinas Stoškus 92",
+  });
+}
+function add_player_99() {
+  db.collection("a1").add({
+    todo: "Tomas Žiburkus 99",
+  });
 }

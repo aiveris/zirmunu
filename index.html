@@ -1,77 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Žirmūnų 1E</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css"
-    />
-  </head>
-  <body>
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Žirmūnų 1E</h3>
-        <label style="text-align: right;">Užsiregistravo:</label>
-        <p id="countA1" class="count">0</p>
-      </div>
-      <table class="table-a1"></table>
-      <div class="add-todo-a1">
-        <form class="form" autocomplete="off">
-          <input
-            type="text"
-            name="todo"
-            placeholder="Įveskite vardą"
-            maxlength="20"
-            required="required"
-          />
-          <button class="btn btn-modal">OK</button>
-        </form>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Žirmūnų 1E</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link
+          rel="stylesheet"
+          href="https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css"
+  />
+</head>
+<body>
+<div class="modal">
+  <div class="header">
+    <div class="clear">
+<!--      <img    src="assets/ziuzi.png" height="30"-->
+<!--              width="90"-->
+<!--              alt="ziuzi logo"-->
+<!--              style="margin-bottom: -5px"-->
+<!--              onclick="location.href='https://www.ziuzi.lt/'"-->
+<!--      />-->
     </div>
-
-    <!-- Edit Modal -->
-    <div class="edit-modal modal-wrapper">
-      <div class="modal">
-        <div class="modal-header">
-          <i class="fi fi-br-cross-small"
-            onclick="close_modal()"
-            style="font-size: 24px"
-          ></i>
-        </div>
-        <div class="modal-body">
-          <form class="form" autocomplete="off">
-            <input
+    <div class="header-text">
+      <h3>Žirmūnų 1E</h3>
+      <label>Užsiregistravo:</label>
+      <p id="countA1" class="count">0</p>
+    </div>
+    <div class="clear">
+<!--      <img-->
+<!--              src="assets/calendar.png"-->
+<!--              height="30"-->
+<!--              width="30"-->
+<!--              style="margin-right: 6px"-->
+<!--              alt="calendar"-->
+<!--              onclick="location.href='https://aiveris.github.io/taika'"-->
+<!--      />-->
+    </div>
+  </div>
+  <div class="players">
+     <button onclick="add_player_0()" id="0" class="" value="0">DJ</button>
+     <button onclick="add_player_2()" id="2" class="" value="2">DV</button>
+     <button onclick="add_player_3()" id="3" class="" value="3">HD</button>
+     <button onclick="add_player_4()" id="4" class="" value="4">JR</button>
+     <button onclick="add_player_5()" id="5" class="" value="5">MU</button>
+     <button onclick="add_player_7()" id="7" class="" value="7">MB</button>
+     <button onclick="add_player_8()" id="8" class="" value="8">MK</button>
+     <button onclick="add_player_9()" id="9" class="" value="9">PP</button>
+     <button onclick="add_player_10()" id="10" class="" value="10">TA</button>
+      <button onclick="add_player_11()" id="11" class="" value="11">VS</button>
+      <button onclick="add_player_12()" id="12" class="" value="12">KJ</button>
+     <button onclick="add_player_13()" id="13" class="" value="13">P</button>
+      <button onclick="add_player_XX()" id="XD" class="" value="XX">-</button>
+      <button onclick="add_player_XX()" id="XE" class="" value="XX">-</button>
+    <!-- <button onclick="add_player_14()" id="14" class="" value="14">14</button>-->
+    <!-- <button onclick="add_player_15()" id="15" class="" value="15">15</button> -->
+    <!-- <button onclick="add_player_19()" id="19" class="" value="19">
+      19
+    </button> -->
+<!--    <button onclick="add_player_23()" id="23" class="" value="23">-->
+<!--      23-->
+<!--    </button>-->
+<!--    <button onclick="add_player_24()" id="24" class="" value="24">-->
+<!--      24-->
+<!--    </button>-->
+<!--    <button onclick="add_player_27()" id="27" class="" value="27">-->
+<!--      27-->
+<!--    </button>-->
+<!--    <button onclick="add_player_30()" id="30" class="" value="30">-->
+<!--      30-->
+<!--    </button>-->
+<!--    <button onclick="add_player_33()" id="33" class="" value="33">-->
+<!--      33-->
+<!--    </button>-->
+    <!-- <button onclick="add_player_42()" id="42" class="" value="42">42</button>-->
+    <!-- <button onclick="add_player_55()" id="55" class="" value="55">55</button> -->
+<!--    <button onclick="add_player_69()" id="69" class="" value="69">-->
+<!--      69-->
+<!--    </button>-->
+<!--    <button onclick="add_player_77()" id="77" class="" value="77">-->
+<!--      77-->
+<!--    </button>-->
+<!--    <button onclick="add_player_82()" id="82" class="" value="82">-->
+<!--      82-->
+<!--    </button>-->
+<!--    <button onclick="add_player_91()" id="91" class="" value="91">91</button>-->
+<!--    <button onclick="add_player_92()" id="92" class="" value="92">-->
+<!--      92-->
+<!--    </button>-->
+<!--    <button onclick="add_player_99()" id="99" class="" value="99">-->
+<!--      99-->
+<!--    </button>-->
+  </div>
+  <table class="table-a1"></table>
+  <div class="add-todo-a1">
+    <form class="form" autocomplete="off">
+      <input
               type="text"
               name="todo"
               placeholder="Įveskite vardą"
-              maxlength="20"
               required="required"
-            />
-            <button class="btn btn-modal">OK</button>
-          </form>
-        </div>
-      </div>
-    </div>
+              minlength="5"
+              maxlength="22"
+              onkeypress="return /[0-9a-žA-Ž ]/i.test(event.key)"
+      />
+      <button class="btn btn-modal">OK</button>
+    </form>
+  </div>
+</div>
 
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-firestore.js"></script>
-    <script>
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-firestore.js"></script>
+<script>
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
     apiKey: "AIzaSyCdHUdRfTekta1ysNXkS8nivUsAMBtL9Pc",
     authDomain: "staneviciaus-751b2.firebaseapp.com",
     projectId: "staneviciaus-751b2",
     storageBucket: "staneviciaus-751b2.appspot.com",
     messagingSenderId: "268181052837",
-    appId: "1:268181052837:web:eb0b7ca1a87ef09d5b1c4c"
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
-    </script>
-    <script src="js/script.js"></script>
-  </body>
+    appId: "1:268181052837:web:eb0b7ca1a87ef09d5b1c4c",
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+<script src="js/script.js"></script>
+</body>
 </html>

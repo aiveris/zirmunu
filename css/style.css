@@ -5,17 +5,39 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
 }
 body {
-  font-family: "Titillium Web", sans-serif;
-  font-size: large;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
   background-size: cover;
   display: flex;
   background-position: center center;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  background: #94a89a;
+  background: rgb(160, 230, 210);
+}
+button {
+  background: rgb(192, 220, 180);
+  border: 0px solid #201d1c;
+  border-radius: 10px;
+  box-shadow: 0 0 6px #201d1c;
+  margin-left: 5px;
+  margin-top: 12px;
+  width: 35px;
+  height: 35px;
+  font-size: 1.05em;
+  font-weight: bold;
+  transition: 0.3s;
+}
+button:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+  background: #ddd;
+}
+button:active {
+  background: #b6e779;
 }
 .btn {
   background: transparent;
@@ -24,7 +46,6 @@ body {
   border-radius: 10px;
   cursor: pointer;
   outline: none;
-  transition: all 0.5s ease;
   box-shadow: none;
   right: 15px;
   font-size: 0.9em;
@@ -36,45 +57,38 @@ body {
   width: 55px;
   height: 25px;
   color: black;
-  border: 1px solid black;
+  border: none;
   margin-left: 20px;
+  background: #ddd;
+  box-shadow: 0 0 6px #201d1c;
 }
 .btn-modal:hover {
-  background: #457b9d;
-  color: #ffff;
-}
-.btn-edit {
-  color: #457b9d;
-  border: 1px solid #457b9d;
-  margin: 0;
-}
-.btn-edit:hover {
-  background: #457b9d;
-  color: #ffff;
-  border: 1px solid #457b9d;
+  transform: scale(1.15);
+  background: rgb(192, 212, 229);
+  border: none;
+  cursor: pointer;
 }
 .btn-delete {
-  color: red;
-  border: 1px solid red;
   margin: 0;
 }
 .btn-delete:hover {
-  background: red;
-  color: #ffff;
+  cursor: pointer;
+  transform: scale(1.1);
 }
 header {
   width: 100%;
-  background: grey;
+  background: #ddd;
   padding: 1rem;
   border-radius: 10px 10px 0px 0px;
 }
 table {
-  width: 90%;
+  width: 95%;
   margin: 0.5rem auto;
   border-collapse: collapse;
 }
 table td {
   text-align: left;
+  font-weight: bold;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   padding: 0.3rem;
@@ -85,17 +99,6 @@ table th {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
-.modal-wrapper {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  padding-top: 50px;
-  display: none;
-  background: #00000067;
-}
 .form {
   padding-top: 10px;
 }
@@ -103,7 +106,7 @@ table th {
   position: relative;
   background: white;
   text-align: center;
-  width: 312px;
+  width: 330px;
   margin: 2rem auto;
   padding-bottom: 1rem;
   -webkit-box-shadow: 0px 0px 32px -9px rgba(0, 0, 0, 0.75);
@@ -111,33 +114,36 @@ table th {
   box-shadow: 0px 0px 32px -9px rgba(0, 0, 0, 0.75);
   border-radius: 10px 10px 10px 10px;
 }
-.edit-modal {
-  animation-name: animatetop;
-  animation-duration: 0.4s;
-}
-@keyframes animatetop {
-  from {
-    top: -300px;
-    opacity: 0;
-  }
-  to {
-    top: 0;
-    opacity: 1;
-  }
-}
-.modal-show {
-  display: block;
-}
-.modal-header {
-  width: 100%;
-  background: #CFD2CF;
-  padding: 0.5rem;
-  border-radius: 10px 10px 0px 0px;
-  text-align: right;
+
+.players {
+  position: relative;
+  background: white;
+  text-align: center;
+  width: 326px;
+  padding-bottom: 0.5rem;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #ddd;
+  padding: 0.5rem;
+  border-radius: 10px 10px 0px 0px;
+}
+.header-text {
+  margin-right: 10px;
+}
+.modal-header {
+  text-align: right;
+  width: 100%;
+  background: #cfd2cf;
+  padding: 0.5rem;
+  border-radius: 10px 10px 0px 0px;
+}
 input {
-  width: 10rem;
+  width: 12rem;
   height: 2.2rem;
   outline: none;
   text-indent: 0.5rem;
@@ -150,9 +156,24 @@ input {
 }
 p {
   display: inline-block;
-  margin-right: 70px;
 }
-i {
+a {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 30px;
+  transition: 0.3s;
+}
+a:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+img {
+  display: inline-block;
+  text-decoration: none;
+  transition: 0.3s;
+}
+img:hover {
+  transform: scale(1.2);
   cursor: pointer;
 }
 h4 {
@@ -161,6 +182,13 @@ h4 {
   text-align: center;
 }
 h3 {
-  text-align: center;
+  text-align: left;
+  padding-left: 10px;
 }
-
+.map {
+  display: flex;
+  align-items: right;
+}
+.disabled {
+  opacity: 0.4;
+}
