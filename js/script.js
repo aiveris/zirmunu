@@ -106,72 +106,72 @@ function add_player_11() {
 }
 function add_player_12() {
   db.collection("a1").add({
-    todo: "Karolis Juchevičius",
+    todo: "Matas Ničajus",
   });
 }
 function add_player_13() {
   db.collection("a1").add({
-    todo: "Pavel ",
+    todo: "Pavel",
   });
 }
 function add_player_14() {
   db.collection("a1").add({
-    todo: "Augustinas Stoškus 14",
+    todo: "Mantas Šimėnas",
   });
 }
 function add_player_15() {
   db.collection("a1").add({
-    todo: "Artūras Simonaitis 15",
+    todo: "Karolis Rimša",
   });
 }
 function add_player_19() {
   db.collection("a1").add({
-    todo: "Vakaris Stoškus 19",
+    todo: "",
   });
 }
 function add_player_23() {
   db.collection("a1").add({
-    todo: "Justas Sobolevskis 23",
+    todo: "",
   });
 }
 function add_player_24() {
   db.collection("a1").add({
-    todo: "Artūras Šliažas 24",
+    todo: "",
   });
 }
 function add_player_27() {
   db.collection("a1").add({
-    todo: "Mantas Kadzevičius 27",
+    todo: "",
   });
 }
 function add_player_30() {
   db.collection("a1").add({
-    todo: "Mindaugas Beleka 30",
+    todo: "",
   });
 }
 function add_player_33() {
   db.collection("a1").add({
-    todo: "Rimantas Sagatas 33",
+    todo: "",
   });
 }
 function add_player_42() {
   db.collection("a1").add({
-    todo: "Donatas Bilius 42",
+    todo: "",
   });
 }
 function add_player_55() {
   db.collection("a1").add({
-    todo: "Donatas Bilius 55",
+    todo: "",
   });
 }
 function add_player_69() {
   db.collection("a1").add({
-    todo: "Raimondas Maslauskas 69",
+    todo: "",
   });
 }
 function add_player_77() {
   db.collection("a1").add({
-    todo: "Donatas Bilius 77",
+    todo: "",
   });
 }
 function add_player_82() {
