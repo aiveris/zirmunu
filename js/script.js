@@ -56,7 +56,7 @@ addTodoFormA1.addEventListener("submit", (e) => {
 
 function add_player_0() {
   db.collection("a1").add({
-    todo: "Deivydas Juškevičius",
+    todo: "Evaldas Stankevičius",
   });
 }
 function add_player_2() {
