@@ -106,12 +106,12 @@ function add_player_11() {
 }
 function add_player_12() {
   db.collection("a1").add({
-    todo: "Matas Ničajus",
+    todo: "Evaldas Dzikevičius",
   });
 }
 function add_player_13() {
   db.collection("a1").add({
-    todo: "Pavel",
+    todo: "Pavel Racevič",
   });
 }
 function add_player_14() {
