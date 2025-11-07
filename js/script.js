@@ -101,7 +101,7 @@ function add_player_10() {
 }
 function add_player_11() {
   db.collection("a1").add({
-    todo: "Vytenis Stankevičius",
+    todo: "Viktor Taujanski",
   });
 }
 function add_player_12() {
