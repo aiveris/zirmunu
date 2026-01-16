@@ -4,6 +4,7 @@ const addTodoFormA1 = document.querySelector(".add-todo-a1 .form");
 const tableTodosA1 = document.querySelector(".table-a1");
 const btnAdd = document.querySelector(".btn-add");
 const plansA1 = document.querySelector(".buttonA1");
+const titleA1 = document.querySelector("#titleA1");
 let id;
 let countA1 = 0;
 
@@ -29,6 +30,16 @@ const renderTodoA1 = (doc) => {
     }
   });
 };
+const setButtonDisabled = (playerId, isDisabled) => {
+  if (playerId === undefined || playerId === null) {
+    return;
+  }
+
+  const button = document.getElementById(String(playerId));
+  if (button) {
+    button.disabled = isDisabled;
+  }
+};
 // // Real time listener.
 db.collection("a1").onSnapshot((snapshot) => {
   snapshot.docChanges().forEach((change) => {
@@ -36,6 +47,8 @@ db.collection("a1").onSnapshot((snapshot) => {
       renderTodoA1(change.doc);
       countA1++;
       document.getElementById("countA1").innerHTML = countA1;
+      const playerId = change.doc.data().playerId;
+      setButtonDisabled(playerId, true);
     }
     if (change.type === "removed") {
       let tr = document.querySelector(`[data-id='${change.doc.id}']`);
@@ -43,6 +56,8 @@ db.collection("a1").onSnapshot((snapshot) => {
       tableTodosA1.removeChild(tbody);
       countA1--;
       document.getElementById("countA1").innerHTML = countA1;
+      const playerId = change.doc.data().playerId;
+      setButtonDisabled(playerId, false);
     }
   });
 });
@@ -54,143 +69,130 @@ addTodoFormA1.addEventListener("submit", (e) => {
   addTodoFormA1.todo.value = "";
 });
 
-function add_player_0() {
-  db.collection("a1").add({
-    todo: "Evaldas Stankevičius",
+const deleteAllA1 = async () => {
+  const snapshot = await db.collection("a1").get();
+  if (snapshot.empty) {
+    return;
+  }
+
+  const batchSize = 500;
+  let batch = db.batch();
+  let operationCount = 0;
+
+  for (const doc of snapshot.docs) {
+    batch.delete(doc.ref);
+    operationCount++;
+    if (operationCount % batchSize === 0) {
+      await batch.commit();
+      batch = db.batch();
+    }
+  }
+
+  if (operationCount % batchSize !== 0) {
+    await batch.commit();
+  }
+};
+
+if (titleA1) {
+  titleA1.addEventListener("click", async () => {
+    const result = confirm("Ištrinti visus įrašus?");
+    if (!result) {
+      return;
+    }
+
+    await deleteAllA1();
   });
+}
+
+const addPlayerA1 = async (playerId, name) => {
+  await db.collection("a1").add({
+    todo: name,
+    playerId: playerId,
+  });
+  setButtonDisabled(playerId, true);
+};
+
+function add_player_0() {
+  addPlayerA1(0, "Evaldas Stankevičius");
 }
 function add_player_2() {
-  db.collection("a1").add({
-    todo: "Domas Vilkelis",
-  });
+  addPlayerA1(2, "Domas Vilkelis");
 }
 function add_player_3() {
-  db.collection("a1").add({
-    todo: "Hubertas Degėsis",
-  });
+  addPlayerA1(3, "Hubertas Degėsis");
 }
 function add_player_4() {
-  db.collection("a1").add({
-    todo: "Jokūbas Ramanauskas",
-  });
+  addPlayerA1(4, "Jokūbas Ramanauskas");
 }
 function add_player_5() {
-  db.collection("a1").add({
-    todo: "Martynas Urbšas",
-  });
+  addPlayerA1(5, "Martynas Urbšas");
 }
 function add_player_7() {
-  db.collection("a1").add({
-    todo: "Mindaugas Beleka",
-  });
+  addPlayerA1(7, "Mindaugas Beleka");
 }
 function add_player_8() {
-  db.collection("a1").add({
-    todo: "Maksim Karas",
-  });
+  addPlayerA1(8, "Maksim Karas");
 }
 function add_player_9() {
-  db.collection("a1").add({
-    todo: "Pijus Petrošius",
-  });
+  addPlayerA1(9, "Pijus Petrošius");
 }
 function add_player_10() {
-  db.collection("a1").add({
-    todo: "Tomas Ališauskas",
-  });
+  addPlayerA1(10, "Tomas Ališauskas");
 }
 function add_player_11() {
-  db.collection("a1").add({
-    todo: "Viktor Taujanski",
-  });
+  addPlayerA1(11, "Viktor Taujanski");
 }
 function add_player_12() {
-  db.collection("a1").add({
-    todo: "Evaldas Dzikevičius",
-  });
+  addPlayerA1(12, "Evaldas Dzikevičius");
 }
 function add_player_13() {
-  db.collection("a1").add({
-    todo: "Pavel Racevič",
-  });
+  addPlayerA1(13, "Pavel Racevič");
 }
 function add_player_14() {
-  db.collection("a1").add({
-    todo: "Mantas Šimėnas",
-  });
+  addPlayerA1(14, "Mantas Šimėnas");
 }
 function add_player_15() {
-  db.collection("a1").add({
-    todo: "Karolis Rimša",
-  });
+  addPlayerA1(15, "Karolis Rimša");
 }
 function add_player_19() {
-  db.collection("a1").add({
-    todo: "",
-  });
+  addPlayerA1(19, "");
 }
 function add_player_23() {
-  db.collection("a1").add({
-    todo: "",
-  });
+  addPlayerA1(23, "");
 }
 function add_player_24() {
-  db.collection("a1").add({
-    todo: "",
-  });
+  addPlayerA1(24, "");
 }
 function add_player_27() {
-  db.collection("a1").add({
-    todo: "",
-  });
+  addPlayerA1(27, "");
 }
 function add_player_30() {
-  db.collection("a1").add({
-    todo: "",
-  });
+  addPlayerA1(30, "");
 }
 function add_player_33() {
-  db.collection("a1").add({
-    todo: "",
-  });
+  addPlayerA1(33, "");
 }
 function add_player_42() {
-  db.collection("a1").add({
-    todo: "",
-  });
+  addPlayerA1(42, "");
 }
 function add_player_55() {
-  db.collection("a1").add({
-    todo: "",
-  });
+  addPlayerA1(55, "");
 }
 function add_player_69() {
-  db.collection("a1").add({
-    todo: "",
-  });
+  addPlayerA1(69, "");
 }
 function add_player_77() {
-  db.collection("a1").add({
-    todo: "",
-  });
+  addPlayerA1(77, "");
 }
 function add_player_82() {
-  db.collection("a1").add({
-    todo: "Dainius Stoškus 82",
-  });
+  addPlayerA1(82, "Dainius Stoškus 82");
 }
 function add_player_91() {
-  db.collection("a1").add({
-    todo: "Jonas Savickas 91",
-  });
+  addPlayerA1(91, "Jonas Savickas 91");
 }
 function add_player_92() {
-  db.collection("a1").add({
-    todo: "Augustinas Stoškus 92",
-  });
+  addPlayerA1(92, "Augustinas Stoškus 92");
 }
 function add_player_99() {
-  db.collection("a1").add({
-    todo: "Tomas Žiburkus 99",
-  });
+  addPlayerA1(99, "Tomas Žiburkus 99");
 }
