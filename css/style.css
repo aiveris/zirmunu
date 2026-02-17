@@ -197,3 +197,75 @@ h3 {
 .disabled {
   opacity: 0.4;
 }
+
+/* Declined (Nebūsiu) button state */
+button.btn-declined {
+  background: #ef4444;
+  color: black;
+  opacity: 1;
+  box-shadow: 0 0 6px #991b1b;
+}
+button.btn-declined:hover {
+  background: #dc2626;
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+/* Confirmation overlay */
+.confirm-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+.confirm-modal {
+  background: white;
+  border-radius: 14px;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  min-width: 240px;
+}
+.confirm-name {
+  font-size: 1.1em;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+}
+.confirm-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.confirm-btn {
+  width: 110px;
+  height: 42px;
+  font-size: 1em;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.2s, background 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.confirm-btn:hover {
+  transform: scale(1.08);
+}
+.confirm-btn-green {
+  background: #22c55e;
+}
+.confirm-btn-green:hover {
+  background: #16a34a;
+}
+.confirm-btn-red {
+  background: #ef4444;
+}
+.confirm-btn-red:hover {
+  background: #dc2626;
+}

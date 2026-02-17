@@ -39,20 +39,20 @@
     </div>
   </div>
   <div class="players">
-     <button onclick="add_player_2()" id="2" class="" value="2">DV</button>
-      <button onclick="add_player_12()" id="12" class="" value="12">ED</button>
-      <button onclick="add_player_0()" id="0" class="" value="0">ES</button>
-      <button onclick="add_player_3()" id="3" class="" value="3">HD</button>
-      <button onclick="add_player_4()" id="4" class="" value="4">JR</button>
-      <button onclick="add_player_15()" id="15" class="" value="15">KR</button>
-      <button onclick="add_player_7()" id="7" class="" value="7">MB</button>
-      <button onclick="add_player_8()" id="8" class="" value="8">MK</button>
-      <button onclick="add_player_14()" id="14" class="" value="14">MŠ</button>
-      <button onclick="add_player_5()" id="5" class="" value="5">MU</button>
-      <button onclick="add_player_9()" id="9" class="" value="9">PP</button>
-      <button onclick="add_player_13()" id="13" class="" value="13">PR</button>
-      <button onclick="add_player_10()" id="10" class="" value="10">TA</button>
-      <button onclick="add_player_11()" id="11" class="" value="11">VT</button>
+     <button onclick="showPlayerModal(2, 'Domas Vilkelis')" id="2" value="2">DV</button>
+      <button onclick="showPlayerModal(12, 'Evaldas Dzikevičius')" id="12" value="12">ED</button>
+      <button onclick="showPlayerModal(0, 'Evaldas Stankevičius')" id="0" value="0">ES</button>
+      <button onclick="showPlayerModal(3, 'Hubertas Degėsis')" id="3" value="3">HD</button>
+      <button onclick="showPlayerModal(4, 'Jokūbas Ramanauskas')" id="4" value="4">JR</button>
+      <button onclick="showPlayerModal(15, 'Karolis Rimša')" id="15" value="15">KR</button>
+      <button onclick="showPlayerModal(7, 'Mindaugas Beleka')" id="7" value="7">MB</button>
+      <button onclick="showPlayerModal(8, 'Maksim Karas')" id="8" value="8">MK</button>
+      <button onclick="showPlayerModal(14, 'Mantas Šimėnas')" id="14" value="14">MŠ</button>
+      <button onclick="showPlayerModal(5, 'Martynas Urbšas')" id="5" value="5">MU</button>
+      <button onclick="showPlayerModal(9, 'Pijus Petrošius')" id="9" value="9">PP</button>
+      <button onclick="showPlayerModal(13, 'Pavel Racevič')" id="13" value="13">PR</button>
+      <button onclick="showPlayerModal(10, 'Tomas Ališauskas')" id="10" value="10">TA</button>
+      <button onclick="showPlayerModal(11, 'Viktor Taujanski')" id="11" value="11">VT</button>
 
     <!-- <button onclick="add_player_19()" id="19" class="" value="19">
       19
@@ -105,6 +105,17 @@
       />
       <button class="btn btn-modal">OK</button>
     </form>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="confirm-overlay">
+  <div class="confirm-modal">
+    <p id="confirmPlayerName" class="confirm-name"></p>
+    <div class="confirm-buttons">
+      <button id="btnBusiu" class="confirm-btn confirm-btn-green">Būsiu</button>
+      <button id="btnNebusiu" class="confirm-btn confirm-btn-red">Nebūsiu</button>
+    </div>
   </div>
 </div>
 

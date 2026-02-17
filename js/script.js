@@ -8,6 +8,9 @@ const titleA1 = document.querySelector("#titleA1");
 let id;
 let countA1 = 0;
 
+// Track players who chose "Nebūsiu" (local state)
+const declinedPlayers = new Set();
+
 // Create element and render to-do a1 ----------------------------------
 const renderTodoA1 = (doc) => {
   const tr = `
@@ -41,25 +44,35 @@ const setButtonDisabled = (playerId, isDisabled) => {
   }
 };
 // // Real time listener.
-db.collection("a1").onSnapshot((snapshot) => {
-  snapshot.docChanges().forEach((change) => {
-    if (change.type === "added") {
-      renderTodoA1(change.doc);
-      countA1++;
-      document.getElementById("countA1").innerHTML = countA1;
-      const playerId = change.doc.data().playerId;
-      setButtonDisabled(playerId, true);
-    }
-    if (change.type === "removed") {
-      let tr = document.querySelector(`[data-id='${change.doc.id}']`);
-      let tbody = tr.parentElement;
-      tableTodosA1.removeChild(tbody);
-      countA1--;
-      document.getElementById("countA1").innerHTML = countA1;
-      const playerId = change.doc.data().playerId;
-      setButtonDisabled(playerId, false);
+db.collection("a1").orderBy("todo").onSnapshot((snapshot) => {
+  // Clear table and reset
+  tableTodosA1.innerHTML = "";
+  countA1 = 0;
+  document.querySelectorAll('.players button').forEach(btn => {
+    btn.disabled = false;
+    // Keep btn-declined class — only clear it if not in declinedPlayers
+    if (!declinedPlayers.has(Number(btn.id))) {
+      btn.classList.remove('btn-declined');
     }
   });
+
+  // Re-render all docs in sorted order
+  snapshot.docs.forEach((doc) => {
+    renderTodoA1(doc);
+    countA1++;
+    const playerId = doc.data().playerId;
+    setButtonDisabled(playerId, true);
+  });
+
+  // Re-apply declined state for buttons not already disabled
+  declinedPlayers.forEach(pid => {
+    const btn = document.getElementById(String(pid));
+    if (btn && !btn.disabled) {
+      btn.classList.add('btn-declined');
+    }
+  });
+
+  document.getElementById("countA1").innerHTML = countA1;
 });
 addTodoFormA1.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -100,6 +113,12 @@ if (titleA1) {
       return;
     }
 
+    // Clear declined state
+    declinedPlayers.clear();
+    document.querySelectorAll('.players button').forEach(btn => {
+      btn.classList.remove('btn-declined');
+    });
+
     await deleteAllA1();
   });
 }
@@ -111,6 +130,50 @@ const addPlayerA1 = async (playerId, name) => {
   });
   setButtonDisabled(playerId, true);
 };
+
+// Show confirmation modal with Būsiu / Nebūsiu options
+function showPlayerModal(playerId, name) {
+  const modal = document.getElementById('confirmModal');
+  const nameEl = document.getElementById('confirmPlayerName');
+  nameEl.textContent = name;
+  modal.style.display = 'flex';
+
+  const btnBusiu = document.getElementById('btnBusiu');
+  const btnNebusiu = document.getElementById('btnNebusiu');
+
+  // Clone buttons to remove previous event listeners
+  const newBusiu = btnBusiu.cloneNode(true);
+  const newNebusiu = btnNebusiu.cloneNode(true);
+  btnBusiu.parentNode.replaceChild(newBusiu, btnBusiu);
+  btnNebusiu.parentNode.replaceChild(newNebusiu, btnNebusiu);
+
+  newBusiu.addEventListener('click', () => {
+    declinedPlayers.delete(playerId);
+    const button = document.getElementById(String(playerId));
+    if (button) {
+      button.classList.remove('btn-declined');
+    }
+    addPlayerA1(playerId, name);
+    modal.style.display = 'none';
+  });
+
+  newNebusiu.addEventListener('click', () => {
+    declinedPlayers.add(playerId);
+    const button = document.getElementById(String(playerId));
+    if (button) {
+      button.classList.add('btn-declined');
+      button.disabled = false;
+    }
+    modal.style.display = 'none';
+  });
+}
+
+// Close modal when clicking outside
+document.getElementById('confirmModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) {
+    e.currentTarget.style.display = 'none';
+  }
+});
 
 function add_player_0() {
   addPlayerA1(0, "Evaldas Stankevičius");
