@@ -8,8 +8,12 @@ const titleA1 = document.querySelector("#titleA1");
 let id;
 let countA1 = 0;
 
-// Track players who chose "Nebūsiu" (local state)
-const declinedPlayers = new Set();
+// Track players who chose "Nebūsiu" (persisted in localStorage)
+const declinedPlayers = new Set(JSON.parse(localStorage.getItem('declinedPlayers') || '[]'));
+
+function saveDeclinedPlayers() {
+  localStorage.setItem('declinedPlayers', JSON.stringify([...declinedPlayers]));
+}
 
 // Create element and render to-do a1 ----------------------------------
 const renderTodoA1 = (doc) => {
@@ -115,6 +119,7 @@ if (titleA1) {
 
     // Clear declined state
     declinedPlayers.clear();
+    saveDeclinedPlayers();
     document.querySelectorAll('.players button').forEach(btn => {
       btn.classList.remove('btn-declined');
     });
@@ -149,6 +154,7 @@ function showPlayerModal(playerId, name) {
 
   newBusiu.addEventListener('click', () => {
     declinedPlayers.delete(playerId);
+    saveDeclinedPlayers();
     const button = document.getElementById(String(playerId));
     if (button) {
       button.classList.remove('btn-declined');
@@ -159,6 +165,7 @@ function showPlayerModal(playerId, name) {
 
   newNebusiu.addEventListener('click', () => {
     declinedPlayers.add(playerId);
+    saveDeclinedPlayers();
     const button = document.getElementById(String(playerId));
     if (button) {
       button.classList.add('btn-declined');
