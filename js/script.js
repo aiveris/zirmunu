@@ -8,7 +8,23 @@ const titleA1 = document.querySelector("#titleA1");
 let id;
 let countA1 = 0;
 
-// Persistence of "Nebūsiu" (declined) is now handled in Firestore.
+// Mapping of names to player IDs for manual entry synchronization
+const nameToIdMap = {
+  "Domas Vilkelis": 2,
+  "Evaldas Dzikevičius": 12,
+  "Evaldas Stankevičius": 0,
+  "Hubertas Degėsis": 3,
+  "Jokūbas Ramanauskas": 4,
+  "Karolis Rimša": 15,
+  "Mindaugas Beleka": 7,
+  "Maksim Karas": 8,
+  "Mantas Šimėnas": 14,
+  "Martynas Urbšas": 5,
+  "Pijus Petrošius": 9,
+  "Pavel Racevič": 13,
+  "Tomas Ališauskas": 10,
+  "Viktor Taujanski": 11
+};
 
 // Create element and render to-do a1 ----------------------------------
 const renderTodoA1 = (doc) => {
@@ -32,33 +48,47 @@ const renderTodoA1 = (doc) => {
     }
   });
 };
-const setButtonDisabled = (playerId, isDisabled) => {
-  if (playerId === undefined || playerId === null) {
-    return;
-  }
 
+const setButtonDisabled = (playerId, isDisabled) => {
+  if (playerId === undefined || playerId === null) return;
   const button = document.getElementById(String(playerId));
   if (button) {
     button.disabled = isDisabled;
   }
 };
-// // Real time listener.
+
+const setButtonDeclined = (playerId, isDeclined) => {
+  if (playerId === undefined || playerId === null) return;
+  const button = document.getElementById(String(playerId));
+  if (button) {
+    if (isDeclined) button.classList.add('btn-declined');
+    else button.classList.remove('btn-declined');
+  }
+};
+
+// Real time listener.
 db.collection("a1").orderBy("todo").onSnapshot((snapshot) => {
-  // Clear table and reset
+  // Clear table and reset UI
   tableTodosA1.innerHTML = "";
   countA1 = 0;
   
-  // Reset all buttons
+  // Reset all buttons first
   document.querySelectorAll('.players button').forEach(btn => {
     btn.disabled = false;
     btn.classList.remove('btn-declined');
   });
 
-  // Re-render all docs based on status
+  // Re-apply states from Firestore
   snapshot.docs.forEach((doc) => {
     const data = doc.data();
-    const playerId = data.playerId;
     const status = data.status || 'attending';
+    const name = data.todo;
+    
+    // Determine player ID: either from field or by matching name
+    let playerId = data.playerId;
+    if (playerId === undefined || playerId === null) {
+      playerId = nameToIdMap[name];
+    }
 
     if (status === 'attending') {
       renderTodoA1(doc);
@@ -68,80 +98,63 @@ db.collection("a1").orderBy("todo").onSnapshot((snapshot) => {
       }
     } else if (status === 'declined') {
       if (playerId !== undefined && playerId !== null) {
-        const btn = document.getElementById(String(playerId));
-        if (btn) {
-          btn.classList.add('btn-declined');
-        }
+        setButtonDeclined(playerId, true);
       }
     }
   });
 
   document.getElementById("countA1").innerHTML = countA1;
 });
-addTodoFormA1.addEventListener("submit", (e) => {
+
+// Manual entry form
+addTodoFormA1.addEventListener("submit", async (e) => {
   e.preventDefault();
-  db.collection("a1").add({
-    todo: addTodoFormA1.todo.value,
-  });
+  const name = addTodoFormA1.todo.value.trim();
+  const playerId = nameToIdMap[name];
+  
+  if (playerId !== undefined) {
+    // If name matches a known player, use setPlayerStatus to ensure sync
+    await setPlayerStatus(playerId, name, 'attending');
+  } else {
+    // Normal guest addition
+    await db.collection("a1").add({
+      todo: name,
+      status: 'attending'
+    });
+  }
   addTodoFormA1.todo.value = "";
 });
 
 const deleteAllA1 = async () => {
   const snapshot = await db.collection("a1").get();
-  if (snapshot.empty) {
-    return;
-  }
+  if (snapshot.empty) return;
 
-  const batchSize = 500;
-  let batch = db.batch();
-  let operationCount = 0;
-
-  for (const doc of snapshot.docs) {
+  const batch = db.batch();
+  snapshot.docs.forEach(doc => {
     batch.delete(doc.ref);
-    operationCount++;
-    if (operationCount % batchSize === 0) {
-      await batch.commit();
-      batch = db.batch();
-    }
-  }
-
-  if (operationCount % batchSize !== 0) {
-    await batch.commit();
-  }
+  });
+  await batch.commit();
 };
 
 if (titleA1) {
   titleA1.addEventListener("click", async () => {
     const result = confirm("Ištrinti visus įrašus?");
-    if (!result) {
-      return;
-    }
-
-    // Clear Firestore collection (which includes both attending and declined)
+    if (!result) return;
     await deleteAllA1();
   });
 }
 
+// Fixed-ID strategy for players to prevent duplicates and simplify updates
 const setPlayerStatus = async (playerId, name, status) => {
-  // Find if player already has a record (to update instead of duplicate)
-  const snapshot = await db.collection("a1").where("playerId", "==", playerId).get();
-  
-  if (!snapshot.empty) {
-    const batch = db.batch();
-    snapshot.docs.forEach(doc => {
-      batch.update(doc.ref, { status: status, todo: name });
-    });
-    await batch.commit();
-  } else {
-    await db.collection("a1").add({
-      todo: name,
-      playerId: playerId,
-      status: status
-    });
-  }
+  const docId = "player_" + playerId;
+  await db.collection("a1").doc(docId).set({
+    todo: name,
+    playerId: playerId,
+    status: status
+  });
 };
 
-// Show confirmation modal with Būsiu / Nebūsiu options
+// Show confirmation modal
 function showPlayerModal(playerId, name) {
   const modal = document.getElementById('confirmModal');
   const nameEl = document.getElementById('confirmPlayerName');
@@ -151,111 +164,42 @@ function showPlayerModal(playerId, name) {
   const btnBusiu = document.getElementById('btnBusiu');
   const btnNebusiu = document.getElementById('btnNebusiu');
 
-  // Clone buttons to remove previous event listeners
+  // Clone to refresh listeners
   const newBusiu = btnBusiu.cloneNode(true);
   const newNebusiu = btnNebusiu.cloneNode(true);
   btnBusiu.parentNode.replaceChild(newBusiu, btnBusiu);
   btnNebusiu.parentNode.replaceChild(newNebusiu, btnNebusiu);
 
-  newBusiu.addEventListener('click', () => {
-    setPlayerStatus(playerId, name, 'attending');
+  newBusiu.addEventListener('click', async () => {
+    await setPlayerStatus(playerId, name, 'attending');
     modal.style.display = 'none';
   });
 
-  newNebusiu.addEventListener('click', () => {
-    setPlayerStatus(playerId, name, 'declined');
+  newNebusiu.addEventListener('click', async () => {
+    await setPlayerStatus(playerId, name, 'declined');
     modal.style.display = 'none';
   });
 }
 
-// Close modal when clicking outside
+// Close modal
 document.getElementById('confirmModal').addEventListener('click', (e) => {
   if (e.target === e.currentTarget) {
     e.currentTarget.style.display = 'none';
   }
 });
 
-function add_player_0() {
-  setPlayerStatus(0, "Evaldas Stankevičius", "attending");
-}
-function add_player_2() {
-  setPlayerStatus(2, "Domas Vilkelis", "attending");
-}
-function add_player_3() {
-  setPlayerStatus(3, "Hubertas Degėsis", "attending");
-}
-function add_player_4() {
-  setPlayerStatus(4, "Jokūbas Ramanauskas", "attending");
-}
-function add_player_5() {
-  setPlayerStatus(5, "Martynas Urbšas", "attending");
-}
-function add_player_7() {
-  setPlayerStatus(7, "Mindaugas Beleka", "attending");
-}
-function add_player_8() {
-  setPlayerStatus(8, "Maksim Karas", "attending");
-}
-function add_player_9() {
-  setPlayerStatus(9, "Pijus Petrošius", "attending");
-}
-function add_player_10() {
-  setPlayerStatus(10, "Tomas Ališauskas", "attending");
-}
-function add_player_11() {
-  setPlayerStatus(11, "Viktor Taujanski", "attending");
-}
-function add_player_12() {
-  setPlayerStatus(12, "Evaldas Dzikevičius", "attending");
-}
-function add_player_13() {
-  setPlayerStatus(13, "Pavel Racevič", "attending");
-}
-function add_player_14() {
-  setPlayerStatus(14, "Mantas Šimėnas", "attending");
-}
-function add_player_15() {
-  setPlayerStatus(15, "Karolis Rimša", "attending");
-}
-function add_player_19() {
-  setPlayerStatus(19, "", "attending");
-}
-function add_player_23() {
-  setPlayerStatus(23, "", "attending");
-}
-function add_player_24() {
-  setPlayerStatus(24, "", "attending");
-}
-function add_player_27() {
-  setPlayerStatus(27, "", "attending");
-}
-function add_player_30() {
-  setPlayerStatus(30, "", "attending");
-}
-function add_player_33() {
-  setPlayerStatus(33, "", "attending");
-}
-function add_player_42() {
-  setPlayerStatus(42, "", "attending");
-}
-function add_player_55() {
-  setPlayerStatus(55, "", "attending");
-}
-function add_player_69() {
-  setPlayerStatus(69, "", "attending");
-}
-function add_player_77() {
-  setPlayerStatus(77, "", "attending");
-}
-function add_player_82() {
-  setPlayerStatus(82, "Dainius Stoškus 82", "attending");
-}
-function add_player_91() {
-  setPlayerStatus(91, "Jonas Savickas 91", "attending");
-}
-function add_player_92() {
-  setPlayerStatus(92, "Augustinas Stoškus 92", "attending");
-}
-function add_player_99() {
-  setPlayerStatus(99, "Tomas Žiburkus 99", "attending");
-}
+// Legacy functions
+function add_player_0() { setPlayerStatus(0, "Evaldas Stankevičius", "attending"); }
+function add_player_2() { setPlayerStatus(2, "Domas Vilkelis", "attending"); }
+function add_player_3() { setPlayerStatus(3, "Hubertas Degėsis", "attending"); }
+function add_player_4() { setPlayerStatus(4, "Jokūbas Ramanauskas", "attending"); }
+function add_player_5() { setPlayerStatus(5, "Martynas Urbšas", "attending"); }
+function add_player_7() { setPlayerStatus(7, "Mindaugas Beleka", "attending"); }
+function add_player_8() { setPlayerStatus(8, "Maksim Karas", "attending"); }
+function add_player_9() { setPlayerStatus(9, "Pijus Petrošius", "attending"); }
+function add_player_10() { setPlayerStatus(10, "Tomas Ališauskas", "attending"); }
+function add_player_11() { setPlayerStatus(11, "Viktor Taujanski", "attending"); }
+function add_player_12() { setPlayerStatus(12, "Evaldas Dzikevičius", "attending"); }
+function add_player_13() { setPlayerStatus(13, "Pavel Racevič", "attending"); }
+function add_player_14() { setPlayerStatus(14, "Mantas Šimėnas", "attending"); }
+function add_player_15() { setPlayerStatus(15, "Karolis Rimša", "attending"); }
