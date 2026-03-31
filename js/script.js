@@ -8,12 +8,7 @@ const titleA1 = document.querySelector("#titleA1");
 let id;
 let countA1 = 0;
 
-// Track players who chose "Nebūsiu" (persisted in localStorage)
-const declinedPlayers = new Set(JSON.parse(localStorage.getItem('declinedPlayers') || '[]'));
-
-function saveDeclinedPlayers() {
-  localStorage.setItem('declinedPlayers', JSON.stringify([...declinedPlayers]));
-}
+// Persistence of "Nebūsiu" (declined) is now handled in Firestore.
 
 // Create element and render to-do a1 ----------------------------------
 const renderTodoA1 = (doc) => {
@@ -52,27 +47,32 @@ db.collection("a1").orderBy("todo").onSnapshot((snapshot) => {
   // Clear table and reset
   tableTodosA1.innerHTML = "";
   countA1 = 0;
+  
+  // Reset all buttons
   document.querySelectorAll('.players button').forEach(btn => {
     btn.disabled = false;
-    // Keep btn-declined class — only clear it if not in declinedPlayers
-    if (!declinedPlayers.has(Number(btn.id))) {
-      btn.classList.remove('btn-declined');
-    }
+    btn.classList.remove('btn-declined');
   });
 
-  // Re-render all docs in sorted order
+  // Re-render all docs based on status
   snapshot.docs.forEach((doc) => {
-    renderTodoA1(doc);
-    countA1++;
-    const playerId = doc.data().playerId;
-    setButtonDisabled(playerId, true);
-  });
+    const data = doc.data();
+    const playerId = data.playerId;
+    const status = data.status || 'attending';
 
-  // Re-apply declined state for buttons not already disabled
-  declinedPlayers.forEach(pid => {
-    const btn = document.getElementById(String(pid));
-    if (btn && !btn.disabled) {
-      btn.classList.add('btn-declined');
+    if (status === 'attending') {
+      renderTodoA1(doc);
+      countA1++;
+      if (playerId !== undefined && playerId !== null) {
+        setButtonDisabled(playerId, true);
+      }
+    } else if (status === 'declined') {
+      if (playerId !== undefined && playerId !== null) {
+        const btn = document.getElementById(String(playerId));
+        if (btn) {
+          btn.classList.add('btn-declined');
+        }
+      }
     }
   });
 
@@ -117,23 +117,28 @@ if (titleA1) {
       return;
     }
 
-    // Clear declined state
-    declinedPlayers.clear();
-    saveDeclinedPlayers();
-    document.querySelectorAll('.players button').forEach(btn => {
-      btn.classList.remove('btn-declined');
-    });
-
+    // Clear Firestore collection (which includes both attending and declined)
     await deleteAllA1();
   });
 }
 
-const addPlayerA1 = async (playerId, name) => {
-  await db.collection("a1").add({
-    todo: name,
-    playerId: playerId,
-  });
-  setButtonDisabled(playerId, true);
+const setPlayerStatus = async (playerId, name, status) => {
+  // Find if player already has a record (to update instead of duplicate)
+  const snapshot = await db.collection("a1").where("playerId", "==", playerId).get();
+  
+  if (!snapshot.empty) {
+    const batch = db.batch();
+    snapshot.docs.forEach(doc => {
+      batch.update(doc.ref, { status: status, todo: name });
+    });
+    await batch.commit();
+  } else {
+    await db.collection("a1").add({
+      todo: name,
+      playerId: playerId,
+      status: status
+    });
+  }
 };
 
 // Show confirmation modal with Būsiu / Nebūsiu options
@@ -153,24 +158,12 @@ function showPlayerModal(playerId, name) {
   btnNebusiu.parentNode.replaceChild(newNebusiu, btnNebusiu);
 
   newBusiu.addEventListener('click', () => {
-    declinedPlayers.delete(playerId);
-    saveDeclinedPlayers();
-    const button = document.getElementById(String(playerId));
-    if (button) {
-      button.classList.remove('btn-declined');
-    }
-    addPlayerA1(playerId, name);
+    setPlayerStatus(playerId, name, 'attending');
     modal.style.display = 'none';
   });
 
   newNebusiu.addEventListener('click', () => {
-    declinedPlayers.add(playerId);
-    saveDeclinedPlayers();
-    const button = document.getElementById(String(playerId));
-    if (button) {
-      button.classList.add('btn-declined');
-      button.disabled = false;
-    }
+    setPlayerStatus(playerId, name, 'declined');
     modal.style.display = 'none';
   });
 }
@@ -183,86 +176,86 @@ document.getElementById('confirmModal').addEventListener('click', (e) => {
 });
 
 function add_player_0() {
-  addPlayerA1(0, "Evaldas Stankevičius");
+  setPlayerStatus(0, "Evaldas Stankevičius", "attending");
 }
 function add_player_2() {
-  addPlayerA1(2, "Domas Vilkelis");
+  setPlayerStatus(2, "Domas Vilkelis", "attending");
 }
 function add_player_3() {
-  addPlayerA1(3, "Hubertas Degėsis");
+  setPlayerStatus(3, "Hubertas Degėsis", "attending");
 }
 function add_player_4() {
-  addPlayerA1(4, "Jokūbas Ramanauskas");
+  setPlayerStatus(4, "Jokūbas Ramanauskas", "attending");
 }
 function add_player_5() {
-  addPlayerA1(5, "Martynas Urbšas");
+  setPlayerStatus(5, "Martynas Urbšas", "attending");
 }
 function add_player_7() {
-  addPlayerA1(7, "Mindaugas Beleka");
+  setPlayerStatus(7, "Mindaugas Beleka", "attending");
 }
 function add_player_8() {
-  addPlayerA1(8, "Maksim Karas");
+  setPlayerStatus(8, "Maksim Karas", "attending");
 }
 function add_player_9() {
-  addPlayerA1(9, "Pijus Petrošius");
+  setPlayerStatus(9, "Pijus Petrošius", "attending");
 }
 function add_player_10() {
-  addPlayerA1(10, "Tomas Ališauskas");
+  setPlayerStatus(10, "Tomas Ališauskas", "attending");
 }
 function add_player_11() {
-  addPlayerA1(11, "Viktor Taujanski");
+  setPlayerStatus(11, "Viktor Taujanski", "attending");
 }
 function add_player_12() {
-  addPlayerA1(12, "Evaldas Dzikevičius");
+  setPlayerStatus(12, "Evaldas Dzikevičius", "attending");
 }
 function add_player_13() {
-  addPlayerA1(13, "Pavel Racevič");
+  setPlayerStatus(13, "Pavel Racevič", "attending");
 }
 function add_player_14() {
-  addPlayerA1(14, "Mantas Šimėnas");
+  setPlayerStatus(14, "Mantas Šimėnas", "attending");
 }
 function add_player_15() {
-  addPlayerA1(15, "Karolis Rimša");
+  setPlayerStatus(15, "Karolis Rimša", "attending");
 }
 function add_player_19() {
-  addPlayerA1(19, "");
+  setPlayerStatus(19, "", "attending");
 }
 function add_player_23() {
-  addPlayerA1(23, "");
+  setPlayerStatus(23, "", "attending");
 }
 function add_player_24() {
-  addPlayerA1(24, "");
+  setPlayerStatus(24, "", "attending");
 }
 function add_player_27() {
-  addPlayerA1(27, "");
+  setPlayerStatus(27, "", "attending");
 }
 function add_player_30() {
-  addPlayerA1(30, "");
+  setPlayerStatus(30, "", "attending");
 }
 function add_player_33() {
-  addPlayerA1(33, "");
+  setPlayerStatus(33, "", "attending");
 }
 function add_player_42() {
-  addPlayerA1(42, "");
+  setPlayerStatus(42, "", "attending");
 }
 function add_player_55() {
-  addPlayerA1(55, "");
+  setPlayerStatus(55, "", "attending");
 }
 function add_player_69() {
-  addPlayerA1(69, "");
+  setPlayerStatus(69, "", "attending");
 }
 function add_player_77() {
-  addPlayerA1(77, "");
+  setPlayerStatus(77, "", "attending");
 }
 function add_player_82() {
-  addPlayerA1(82, "Dainius Stoškus 82");
+  setPlayerStatus(82, "Dainius Stoškus 82", "attending");
 }
 function add_player_91() {
-  addPlayerA1(91, "Jonas Savickas 91");
+  setPlayerStatus(91, "Jonas Savickas 91", "attending");
 }
 function add_player_92() {
-  addPlayerA1(92, "Augustinas Stoškus 92");
+  setPlayerStatus(92, "Augustinas Stoškus 92", "attending");
 }
 function add_player_99() {
-  addPlayerA1(99, "Tomas Žiburkus 99");
+  setPlayerStatus(99, "Tomas Žiburkus 99", "attending");
 }
