@@ -1,141 +1,242 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Žirmūnų 1E</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css"
-  />
-</head>
-<body>
-<div class="modal">
-  <div class="header">
-    <div class="clear">
-<!--      <img    src="assets/ziuzi.png" height="30"-->
-<!--              width="90"-->
-<!--              alt="ziuzi logo"-->
-<!--              style="margin-bottom: -5px"-->
-<!--              onclick="location.href='https://www.ziuzi.lt/'"-->
-<!--      />-->
-    </div>
-    <div class="header-text">
-      <h3 id="titleA1">Žirmūnų 1E</h3>
-      <label>Užsiregistravo:</label>
-      <p id="countA1" class="count">0</p>
-    </div>
-    <div class="clear">
-<!--      <img-->
-<!--              src="assets/calendar.png"-->
-<!--              height="30"-->
-<!--              width="30"-->
-<!--              style="margin-right: 6px"-->
-<!--              alt="calendar"-->
-<!--              onclick="location.href='https://aiveris.github.io/taika'"-->
-<!--      />-->
-    </div>
-  </div>
-  <div class="players">
-     <button onclick="showPlayerModal(2, 'Domas Vilkelis')" id="2" value="2">DV</button>
-      <button onclick="showPlayerModal(12, 'Evaldas Dzikevičius')" id="12" value="12">ED</button>
-      <button onclick="showPlayerModal(0, 'Evaldas Stankevičius')" id="0" value="0">ES</button>
-      <button onclick="showPlayerModal(3, 'Hubertas Degėsis')" id="3" value="3">HD</button>
-      <button onclick="showPlayerModal(4, 'Jokūbas Ramanauskas')" id="4" value="4">JR</button>
-      <button onclick="showPlayerModal(15, 'Karolis Rimša')" id="15" value="15">KR</button>
-      <button onclick="showPlayerModal(7, 'Mindaugas Beleka')" id="7" value="7">MB</button>
-      <button onclick="showPlayerModal(8, 'Maksim Karas')" id="8" value="8">MK</button>
-      <button onclick="showPlayerModal(14, 'Mantas Šimėnas')" id="14" value="14">MŠ</button>
-      <button onclick="showPlayerModal(5, 'Martynas Urbšas')" id="5" value="5">MU</button>
-      <button onclick="showPlayerModal(9, 'Pijus Petrošius')" id="9" value="9">PP</button>
-      <button onclick="showPlayerModal(13, 'Pavel Racevič')" id="13" value="13">PR</button>
-      <button onclick="showPlayerModal(10, 'Tomas Ališauskas')" id="10" value="10">TA</button>
-      <button onclick="showPlayerModal(11, 'Viktor Taujanski')" id="11" value="11">VT</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Žirmūnų 1E</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css"
+    />
+  </head>
+  <body>
+    <div class="modal">
+      <div class="header">
+        <div class="clear">
+          <!--      <img    src="assets/ziuzi.png" height="30"-->
+          <!--              width="90"-->
+          <!--              alt="ziuzi logo"-->
+          <!--              style="margin-bottom: -5px"-->
+          <!--              onclick="location.href='https://www.ziuzi.lt/'"-->
+          <!--      />-->
+        </div>
+        <div class="header-text">
+          <h3 id="titleA1">Žirmūnų 1E</h3>
+          <label>Užsiregistravo:</label>
+          <p id="countA1" class="count">0</p>
+        </div>
+        <div class="clear">
+          <!--      <img-->
+          <!--              src="assets/calendar.png"-->
+          <!--              height="30"-->
+          <!--              width="30"-->
+          <!--              style="margin-right: 6px"-->
+          <!--              alt="calendar"-->
+          <!--              onclick="location.href='https://aiveris.github.io/taika'"-->
+          <!--      />-->
+        </div>
+      </div>
+      <div class="players">
+        <button
+          onclick="showPlayerModal(2, 'Mantvydas Bosas')"
+          id="2"
+          value="2"
+        >
+          BO
+        </button>
+        <button
+          onclick="showPlayerModal(12, 'Evaldas Dzikevičius')"
+          id="12"
+          value="12"
+        >
+          ED
+        </button>
+        <button
+          onclick="showPlayerModal(12, 'Evaldas Stankevičius')"
+          id="12"
+          value="12"
+        >
+          ES
+        </button>
+        <button
+          onclick="showPlayerModal(3, 'Hubertas Degėsis')"
+          id="3"
+          value="3"
+        >
+          HD
+        </button>
 
-    <!-- <button onclick="add_player_19()" id="19" class="" value="19">
+        <button
+          onclick="showPlayerModal(0, 'Karolis Juchevičius')"
+          id="0"
+          value="0"
+        >
+          KJ
+        </button>
+        <button
+          onclick="showPlayerModal(15, 'Karolis Rimša')"
+          id="15"
+          value="15"
+        >
+          KR
+        </button>
+        <button
+          onclick="showPlayerModal(7, 'Mindaugas Beleka')"
+          id="7"
+          value="7"
+        >
+          MB
+        </button>
+        <button onclick="showPlayerModal(8, 'Maksim Karas')" id="8" value="8">
+          MK
+        </button>
+        <button
+          onclick="showPlayerModal(4, 'Martynas Skrebė')"
+          id="4"
+          value="4"
+        >
+          MS
+        </button>
+        <button
+          onclick="showPlayerModal(5, 'Martynas Urbšas')"
+          id="5"
+          value="5"
+        >
+          MU
+        </button>
+        <button
+          onclick="showPlayerModal(5, 'Nojus Daukintis')"
+          id="5"
+          value="5"
+        >
+          ND
+        </button>
+
+        <button
+          onclick="showPlayerModal(9, 'Pijus Petrošius')"
+          id="9"
+          value="9"
+        >
+          PP
+        </button>
+        <button
+          onclick="showPlayerModal(13, 'Pavel Racevič')"
+          id="13"
+          value="13"
+        >
+          PR
+        </button>
+
+        <button
+          onclick="showPlayerModal(14, 'Vytenis Stankevičius')"
+          id="14"
+          value="14"
+        >
+          VS
+        </button>
+        <button
+          onclick="showPlayerModal(11, 'Viktor Taujanski')"
+          id="11"
+          value="11"
+        >
+          VT
+        </button>
+        <button
+          onclick="showPlayerModal(10, 'Tomas Ališauskas')"
+          id="10"
+          value="10"
+        >
+          TA
+        </button>
+
+        <!-- <button onclick="add_player_19()" id="19" class="" value="19">
       19
     </button> -->
-<!--    <button onclick="add_player_23()" id="23" class="" value="23">-->
-<!--      23-->
-<!--    </button>-->
-<!--    <button onclick="add_player_24()" id="24" class="" value="24">-->
-<!--      24-->
-<!--    </button>-->
-<!--    <button onclick="add_player_27()" id="27" class="" value="27">-->
-<!--      27-->
-<!--    </button>-->
-<!--    <button onclick="add_player_30()" id="30" class="" value="30">-->
-<!--      30-->
-<!--    </button>-->
-<!--    <button onclick="add_player_33()" id="33" class="" value="33">-->
-<!--      33-->
-<!--    </button>-->
-    <!-- <button onclick="add_player_42()" id="42" class="" value="42">42</button>-->
-    <!-- <button onclick="add_player_55()" id="55" class="" value="55">55</button> -->
-<!--    <button onclick="add_player_69()" id="69" class="" value="69">-->
-<!--      69-->
-<!--    </button>-->
-<!--    <button onclick="add_player_77()" id="77" class="" value="77">-->
-<!--      77-->
-<!--    </button>-->
-<!--    <button onclick="add_player_82()" id="82" class="" value="82">-->
-<!--      82-->
-<!--    </button>-->
-<!--    <button onclick="add_player_91()" id="91" class="" value="91">91</button>-->
-<!--    <button onclick="add_player_92()" id="92" class="" value="92">-->
-<!--      92-->
-<!--    </button>-->
-<!--    <button onclick="add_player_99()" id="99" class="" value="99">-->
-<!--      99-->
-<!--    </button>-->
-  </div>
-  <table class="table-a1"></table>
-  <div class="add-todo-a1">
-    <form class="form" autocomplete="off">
-      <input
-              type="text"
-              name="todo"
-              placeholder="Įveskite vardą"
-              required="required"
-              minlength="5"
-              maxlength="22"
-              onkeypress="return /[0-9a-žA-Ž ]/i.test(event.key)"
-      />
-      <button class="btn btn-modal">OK</button>
-    </form>
-  </div>
-</div>
-
-<!-- Confirmation Modal -->
-<div id="confirmModal" class="confirm-overlay">
-  <div class="confirm-modal">
-    <p id="confirmPlayerName" class="confirm-name"></p>
-    <div class="confirm-buttons">
-      <button id="btnBusiu" class="confirm-btn confirm-btn-green">Būsiu</button>
-      <button id="btnNebusiu" class="confirm-btn confirm-btn-red">Nebūsiu</button>
+        <!--    <button onclick="add_player_23()" id="23" class="" value="23">-->
+        <!--      23-->
+        <!--    </button>-->
+        <!--    <button onclick="add_player_24()" id="24" class="" value="24">-->
+        <!--      24-->
+        <!--    </button>-->
+        <!--    <button onclick="add_player_27()" id="27" class="" value="27">-->
+        <!--      27-->
+        <!--    </button>-->
+        <!--    <button onclick="add_player_30()" id="30" class="" value="30">-->
+        <!--      30-->
+        <!--    </button>-->
+        <!--    <button onclick="add_player_33()" id="33" class="" value="33">-->
+        <!--      33-->
+        <!--    </button>-->
+        <!-- <button onclick="add_player_42()" id="42" class="" value="42">42</button>-->
+        <!-- <button onclick="add_player_55()" id="55" class="" value="55">55</button> -->
+        <!--    <button onclick="add_player_69()" id="69" class="" value="69">-->
+        <!--      69-->
+        <!--    </button>-->
+        <!--    <button onclick="add_player_77()" id="77" class="" value="77">-->
+        <!--      77-->
+        <!--    </button>-->
+        <!--    <button onclick="add_player_82()" id="82" class="" value="82">-->
+        <!--      82-->
+        <!--    </button>-->
+        <!--    <button onclick="add_player_91()" id="91" class="" value="91">91</button>-->
+        <!--    <button onclick="add_player_92()" id="92" class="" value="92">-->
+        <!--      92-->
+        <!--    </button>-->
+        <!--    <button onclick="add_player_99()" id="99" class="" value="99">-->
+        <!--      99-->
+        <!--    </button>-->
+      </div>
+      <table class="table-a1"></table>
+      <div class="add-todo-a1">
+        <form class="form" autocomplete="off">
+          <input
+            type="text"
+            name="todo"
+            placeholder="Įveskite vardą"
+            required="required"
+            minlength="5"
+            maxlength="22"
+            onkeypress="return /[0-9a-žA-Ž ]/i.test(event.key);"
+          />
+          <button class="btn btn-modal">OK</button>
+        </form>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-firestore.js"></script>
-<script>
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdHUdRfTekta1ysNXkS8nivUsAMBtL9Pc",
-    authDomain: "staneviciaus-751b2.firebaseapp.com",
-    projectId: "staneviciaus-751b2",
-    storageBucket: "staneviciaus-751b2.appspot.com",
-    messagingSenderId: "268181052837",
-    appId: "1:268181052837:web:eb0b7ca1a87ef09d5b1c4c",
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-</script>
-<script src="js/script.js"></script>
-</body>
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="confirm-overlay">
+      <div class="confirm-modal">
+        <p id="confirmPlayerName" class="confirm-name"></p>
+        <div class="confirm-buttons">
+          <button id="btnBusiu" class="confirm-btn confirm-btn-green">
+            Būsiu
+          </button>
+          <button id="btnNebusiu" class="confirm-btn confirm-btn-red">
+            Nebūsiu
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-firestore.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCdHUdRfTekta1ysNXkS8nivUsAMBtL9Pc",
+        authDomain: "staneviciaus-751b2.firebaseapp.com",
+        projectId: "staneviciaus-751b2",
+        storageBucket: "staneviciaus-751b2.appspot.com",
+        messagingSenderId: "268181052837",
+        appId: "1:268181052837:web:eb0b7ca1a87ef09d5b1c4c",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+    </script>
+    <script src="js/script.js"></script>
+  </body>
 </html>
